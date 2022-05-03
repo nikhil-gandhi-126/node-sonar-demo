@@ -1,0 +1,63 @@
+version: 0.2
+environment_variables:
+  plaintext:
+    S3_BUCKET: 'dev-auth-growexx-artifacts'
+#    repository_url: '719056139938.dkr.ecr.us-east-2.amazonaws.com/cheatcode-stg-api-repository'
+    projectKey: "growexx-postgres-be"
+    projctVersion: "Sprint-1"
+    projectName: "growexx-postgres-be"
+env:
+  parameter-store:
+    GITHUB_TOKEN: "GITHUB_TOKEN"
+    SONAR_TOKEN: "SONAR_TOKEN"
+    SONAR_HOST: "SONAR_HOST"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14.x 
+
+  pre_build:
+    commands:
+      - cd auth
+      - echo `aws --version`
+      - echo Logging in to Amazon ECR...
+      - docker login -u AWS -p $(aws ecr get-login-password) https://$(aws sts get-caller-identity --query 'Account' --output text).dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+     # - aws s3 cp s3://$S3_BUCKET/config/.env .
+     # - aws s3 cp s3://$S3_BUCKET/config/testing.env .
+      - npm install
+      - ls -ltr
+      - echo Entered the pre_build phase...
+  build:
+    commands:
+            #      - echo Build started on `date`
+            #      - echo Running unit tests
+            #      - npm test
+            #      - echo Runnng sonar-scanner on `date`
+            #      - curl ifconfig.co
+            #      - aws s3 cp s3://$S3_BUCKET/config/sonar-scanner-cli-4.0.0.1744-linux.zip .
+            #      - unzip sonar-scanner-cli-4.0.0.1744-linux.zip
+            #      - cp sonar-scanner.properties sonar-scanner-4.0.0.1744-linux/conf/sonar-scanner.properties
+            #      - echo $SONAR_HOST  
+            #      - ./sonar-scanner-4.0.0.1744-linux/bin/sonar-scanner -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=$projectKey -Dsonar.projectVersion=$projectVersion
+            #      - echo Running semantic release on `date`
+            #      - npx semantic-release --debug --no-ci
+            #      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"auth-service-task","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > ../imagedefinitions.json
+cache:
+  paths:
+    - 'node_modules/**/*'
+
+artifacts:
+  files: imagedefinitions.json
+
