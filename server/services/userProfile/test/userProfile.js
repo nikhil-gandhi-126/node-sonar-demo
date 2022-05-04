@@ -547,6 +547,59 @@ module.exports = {
         },
         status: 0
     }],
+    updateProfile: [
+        {
+            it: 'As a user I should validate if first name is not pass',
+            options: {
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if first name is not minimum number',
+            options: {
+                firstName: 'A'
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if first name is greater than maximum number',
+            options: {
+                firstName: '8776f108e247ab1e2b323042c049c266407c81fbad41bde1e8dfc1bb66fd267e'
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if last name is not pass',
+            options: {
+                firstName: 'User'
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if last name is passed incorrectly',
+            options: {
+                firstName: 'User',
+                lastName: ''
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if last name is not minimum number',
+            options: {
+                firstName: 'User',
+                lastName: 'A'
+            },
+            status: 0
+        },
+        {
+            it: 'As a user I should validate if last name is greater than maximum number',
+            options: {
+                firstName: 'User',
+                lastName: '8776f108e247ab1e2b323042c049c266407c81fbad41bde1e8dfc1bb66fd267e'
+            },
+            status: 0
+        }
+    ],
     changePassword: [{
         it: 'As a user, I should validate change password request',
         options: {

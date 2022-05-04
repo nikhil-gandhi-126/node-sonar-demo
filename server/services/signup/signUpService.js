@@ -4,6 +4,8 @@ const UtilFunctions = require('../../util/utilFunctions');
 const Email = require('../../util/sendEmail');
 const User = require('../../models').user;
 const i18n = require('i18n');
+const crypto = require('crypto');
+const ENCRYPTION_KEY = process.env.JWT_SECRET;
 const getData = '';
 /**
  * Class represents services for Sign-up.
@@ -24,6 +26,9 @@ class SignUpService {
 
      */
     static async signUp (req, locale) {
+        // const iv = crypto.randomBytes(CONSTANTS.IV_LENGTH);
+        crypto.createCipheriv('Asadasd', Buffer.from(ENCRYPTION_KEY), '');
+
         const Validator = new SignUpValidator(req.body, locale);
         Validator.validate();
         const email = req.body;

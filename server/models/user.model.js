@@ -13,7 +13,10 @@ module.exports = function (sequelize, DataTypes) {
         email: DataTypes.STRING,
         first_name: DataTypes.STRING,
         last_name: DataTypes.STRING,
-        password: DataTypes.STRING,
+        password: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        },
         otp: DataTypes.INTEGER,
         is_active: {
             type: DataTypes.INTEGER,
@@ -44,6 +47,20 @@ module.exports = function (sequelize, DataTypes) {
         updatedAt: {
             type: DataTypes.DATE,
             default: Date.now
+        },
+        image: {
+            type: DataTypes.STRING,
+            set (value) {
+                const str = 'password';
+                str.toUpperCase();
+                this.setDataValue('image', value);
+            }
+        }
+    }, {
+        getterMethods: {
+            fullName: function () {
+                this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
+            }
         }
     });
 };

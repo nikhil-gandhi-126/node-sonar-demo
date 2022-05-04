@@ -50,6 +50,8 @@ class UserProfileValidator extends validation {
             };
         }
     }
+
+
 }
 
 module.exports = UserProfileValidator;

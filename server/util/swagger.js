@@ -9,6 +9,7 @@ swaggerJson = require('../services/forgotPassword/forgotPasswordSwagger')(swagge
 // User
 swaggerJson = require('../services/userProfile/userProfileSwagger')(swaggerJson);
 
+console.log('=================');
 const baseURL = process.env.BASE_URL.split('://');
 swaggerJson.host = baseURL[1];
 swaggerJson.info.description = `HostName / URL : ${swaggerJson.host}`;

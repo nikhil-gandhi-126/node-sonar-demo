@@ -18,6 +18,7 @@ class SignInService {
      * @param {Object} res Response
      */
     static async signIn (req, locale) {
+        const { } = req.body;
         const Validator = new SignInValidator(req.body, locale);
         Validator.validate();
         const email = req.body.email.toLowerCase();
@@ -49,6 +50,7 @@ class SignInService {
 
             if (roles.includes(user.role)) { }
             if (!isMatch) {
+                isMatch = false;
                 throw {
                     message: MESSAGES.LOGIN_FAILED,
                     statusCode: 401

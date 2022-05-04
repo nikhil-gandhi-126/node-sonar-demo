@@ -9,7 +9,7 @@ const SignUpController = require('../services/signup/signUpController');
 const SignInController = require('../services/signin/signInController');
 const ForgotPasswordController = require('../services/forgotPassword/forgotPasswordController');
 
-const PostController = require('../services/postPassword/postPasswordController');
+const PostController = require('../services/post/postController');
 
 // Auth Routes
 router.post('/signup', SignUpController.signUp);

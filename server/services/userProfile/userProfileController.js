@@ -68,6 +68,25 @@ class UserProfileController {
             Utils.sendResponse(error, null, res, error.message);
         }
     }
+
+    /**
+     * @desc This function is being used to update profile details
+     * @author Growexx
+     * @since 01/03/2021
+     * @param {Object} req Request
+     * @param {Object} req.body RequestBody
+     * @param {Object} req.body.first_name first_name
+     * @param {Object} req.body.last_name last_name
+     * @param {function} res Response
+     */
+    static async updateProfile (req, res) {
+        try {
+            const data = await UserProfileService.updateProfile(req, res.locals.user);
+            Utils.sendResponse(null, data, res, res.__('SUCCESS'));
+        } catch (error) {
+            Utils.sendResponse(error, null, res, error.message);
+        }
+    }
 }
 
 module.exports = UserProfileController;

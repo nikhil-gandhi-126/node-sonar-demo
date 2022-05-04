@@ -229,3 +229,5 @@ describe('User Profile password change', () => {
         CONSOLE_LOGGER.error(exception);
     }
 });
+
+

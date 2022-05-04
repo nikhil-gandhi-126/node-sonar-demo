@@ -10,5 +10,6 @@ router.get('/details', AuthMiddleWare, AclMiddleWare, userProfileController.getU
 router.put('/picture', AuthMiddleWare, AclMiddleWare, UploadMiddleWare.single('photo'), userProfileController.updateProfilePicture);
 router.delete('/picture', AuthMiddleWare, AclMiddleWare, userProfileController.deleteProfilePicture);
 router.put('/password', AuthMiddleWare, AclMiddleWare, userProfileController.changePassword);
+router.put('/update-profile', AuthMiddleWare, AclMiddleWare, userProfileController.updateProfile);
 
 module.exports = router;

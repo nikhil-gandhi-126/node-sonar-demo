@@ -3,6 +3,7 @@ const UserBasicProfileValidator = require('./userProfileValidator');
 const UploadService = require('../../util/uploadService');
 const crypt = require('../../util/crypt');
 const GeneralError = require('../../util/GeneralError');
+const multer = require('multer');
 
 /**
  * Class represents services for user Basic Profile.
@@ -32,9 +33,6 @@ class UserProfileService {
      */
     static async updateProfilePicture (req, user) {
         const fileName = `${process.env.NODE_ENV}-proflie-pictures/${user.id}`;
-        const Validator = new UserBasicProfileValidator(req.file);
-        await Validator.validationProfilePicture();
-        await UploadService.uploadFile(req.file, fileName);
         const filePath = `${CONSTANTS.AWS_S3_URL}${CONSTANTS.AWS_S3_PUBLIC_BUCKET}/${fileName}`;
         const updateData = {
             profilePicture: filePath
@@ -78,6 +76,22 @@ class UserProfileService {
             const hash = await crypt.enCryptPassword(data.newPassword);
             await User.update({ password: hash }, { where: { id: user.id } });
         }
+    }
+
+    /**
+     * @desc This function is being used to update user profile picture
+     * @author Growexx
+     * @since 01/03/2021
+     * @param {Object} req Request
+     * @param {Object} req.body RequestBody
+     * @param {Object} res Response
+     */
+    static async updateProfile (data, user, locale) {
+        const Validator = new UserBasicProfileValidator(null, locale);
+
+        Validator.firstName(data.firstName);
+        Validator.lastName(data.lastName);
+        await User.update({ firstName: data.firstName, lastName: data.lastName }, { where: { id: user.id } });
     }
 }
 
